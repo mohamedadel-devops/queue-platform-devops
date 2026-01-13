@@ -9,7 +9,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "app_sg" {
-  name        = "${var.env_name}-queue-sg"
+  name_prefix        = "${var.env_name}-queue-sg"
   description = "SSH + API"
 
   ingress {
