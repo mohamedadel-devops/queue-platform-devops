@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: redis:7
+    container_name: redis_production
+    restart: unless-stopped
+
+  api:
+    image: ${DOCKERHUB_NAMESPACE}/${API_IMAGE}:${IMAGE_TAG}
+    container_name: api_production
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  worker:
+    image: ${DOCKERHUB_NAMESPACE}/${WORKER_IMAGE}:${IMAGE_TAG}
+    container_name: worker_production
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+    restart: unless-stopped
+

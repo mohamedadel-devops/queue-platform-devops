@@ -1,0 +1,29 @@
+name: Infra - Plan (Terraform)
+
+on:
+  pull_request:
+    paths:
+      - "infra/terraform/**"
+
+jobs:
+  plan_staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (GitHub Action)
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform (GitHub Action)
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init (Terraform CLI)
+        working-directory: infra/terraform
+        run: terraform init
+
+      - name: Terraform Validate (Terraform CLI)
+        working-directory: infra/terraform
+        run: terraform validate
+
+      - name: Terraform Plan - Staging (Terraform CLI)
+        working-directory: infra/terraform
+        run: terraform plan -var-file=envs/staging.tfvars
+
