@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 }
 
 resource "aws_iam_role" "ssm_role" {
-  name               = "${var.env_name}-queue-ssm-role"
+  name_prefix               = "${var.env_name}-queue-ssm-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
 }
 
 resource "aws_iam_instance_profile" "ssm_profile" {
-  name = "${var.env_name}-queue-ssm-profile"
+  name_prefix = "${var.env_name}-queue-ssm-profile"
   role = aws_iam_role.ssm_role.name
 }
 
